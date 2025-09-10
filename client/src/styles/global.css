@@ -1,0 +1,159 @@
+/* 🎨 צבעים */
+:root {
+    --primary-color: #5563DE;
+    --primary-hover: #3f4bb8;
+    --danger-color: #ff4d4d;
+    --danger-hover: #cc0000;
+    --bg-light: #f5f7fa;
+    --text-color: #333;
+    --text-light: #666;
+    --border-color: #ddd;
+}
+
+/* 🖋 טיפוגרפיה כללית */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-color);
+}
+
+/* 📦 קונטיינר אחיד לדפים */
+.page-container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* 📝 כותרות */
+h1,
+h2,
+h3 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+/* 🔘 כפתורים */
+button {
+    padding: 8px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+button.danger {
+    background-color: var(--danger-color);
+}
+
+button.danger:hover {
+    background-color: var(--danger-hover);
+}
+
+/* 🖊 שדות קלט */
+input,
+select,
+textarea {
+    padding: 8px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(85, 99, 222, 0.3);
+}
+
+/* 📋 רשימות */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+ul li:last-child {
+    border-bottom: none;
+}
+
+/* 🌐 Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #74ABE2, var(--primary-color));
+    padding: 10px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 6px 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.nav-links a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.logout-btn {
+    background-color: var(--danger-color);
+}
+
+.logout-btn:hover {
+    background-color: var(--danger-hover);
+}
+
+ul li {
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 8px;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+
+/* רווח אנכי בין שדות קלט בטפסים */
+form input,
+form textarea,
+form select,
+form button {
+    display: block;
+    /* כל שדה בשורה נפרדת */
+    width: 100%;
+    /* שדות באורך מלא */
+    margin-bottom: 15px;
+    /* רווח של 15px בין השדות */
+}
+
+/* אפשרות: ריווח נוסף בין קבוצות שדות */
+form button {
+    margin-top: 5px;
+    /* רווח קטן מעל הכפתור */
+}
