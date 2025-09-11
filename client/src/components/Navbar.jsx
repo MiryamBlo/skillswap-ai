@@ -1,8 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import '../css/Navbar.css';
 
 export default function Navbar() {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Hide navbar on login/register pages
+    if (location.pathname === '/login' || location.pathname === '/register') {
+        return null;
+    }
 
     const handleLogout = () => {
         localStorage.removeItem('token');
