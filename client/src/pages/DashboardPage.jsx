@@ -1,9 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardActionArea, CardContent, Typography, Box } from '@mui/material';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 export default function DashboardPage() {
+    const navigate = useNavigate();
+
     return (
         <Box
             sx={{
@@ -34,7 +37,7 @@ export default function DashboardPage() {
             >
                 <CardActionArea
                     sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    onClick={() => alert('I want to help!')}
+                    onClick={() => navigate('/help-suggesting')}
                 >
                     <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <VolunteerActivismIcon sx={{ fontSize: 80, color: '#00bfae', mb: 2 }} />

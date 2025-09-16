@@ -9,6 +9,7 @@ import OpportunitiesPage from './pages/OpportunitiesPage';
 import CategoryDetailsPage from './pages/CategoryDetailsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardPage from './pages/DashboardPage';
+import HelpSuggestingPage from './pages/HelpSuggestingPage';
 
 export default function App() {
   const location = useLocation();
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/opportunities" element={<ProtectedRoute><OpportunitiesPage /></ProtectedRoute>} />
         <Route path="/categories/:id" element={<CategoryDetailsPage />} />
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+        <Route path="/help-suggesting" element={<HelpSuggestingPage />} />
       </Routes>
     </>
   );
