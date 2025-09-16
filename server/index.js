@@ -9,6 +9,7 @@ const skillsRoutes = require('./routes/skills');
 const opportunitiesRoutes = require('./routes/opportunities');
 const categoriesRoutes = require('./routes/categories');
 const dashboardRoutes = require('./routes/dashboard'); // Add this line
+const helpSuggestionsRoutes = require('./routes/helpSuggestions');
 
 
 const app = express();
@@ -22,7 +23,7 @@ app.use('/api/auth', authRoutes);               // Login / Register
 app.use('/api/skills', skillsRoutes);           // Skills CRUD
 app.use('/api/dashboard', dashboardRoutes); // Add this line
 app.use('/api/categories', categoriesRoutes);   // Skill categories CRUD
-
+app.use('/api/help-suggestions', helpSuggestionsRoutes);
 // Health check endpoint
 app.get('/', (req, res) => {
     res.send({ message: 'SkillSwapAI API is running 🚀' });

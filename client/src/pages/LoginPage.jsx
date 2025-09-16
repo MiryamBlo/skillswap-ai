@@ -11,7 +11,7 @@ export default function LoginPage() {
     const location = useLocation();
 
     // If redirected from a protected page, go back there after login
-    const from = location.state?.from?.pathname || '/users';
+    const from = location.state?.from?.pathname || '/dashboard';
 
     const handleLogin = async (e) => {
         e.preventDefault();
