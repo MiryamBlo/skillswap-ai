@@ -27,3 +27,17 @@ exports.addCategory = async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 };
+
+exports.deleteCategory = async (req, res) => {
+    try {
+        const result = await db.query(
+            'UPDATE skill_categories SET is_deleted = true WHERE id = $1 RETURNING *',
+            [req.params.id]
+        );
+        res.status(200).json(result.rows[0]);
+    }
+    catch (error) {
+        console.error('Error deleting category:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+}

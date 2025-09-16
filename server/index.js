@@ -8,6 +8,8 @@ const authRoutes = require('./routes/authRoutes');
 const skillsRoutes = require('./routes/skills');
 const opportunitiesRoutes = require('./routes/opportunities');
 const categoriesRoutes = require('./routes/categories');
+const dashboardRoutes = require('./routes/dashboard'); // Add this line
+
 
 const app = express();
 
@@ -18,7 +20,7 @@ app.use(express.json());
 // Routes
 app.use('/api/auth', authRoutes);               // Login / Register
 app.use('/api/skills', skillsRoutes);           // Skills CRUD
-app.use('/api/opportunities', opportunitiesRoutes); // Opportunities CRUD
+app.use('/api/dashboard', dashboardRoutes); // Add this line
 app.use('/api/categories', categoriesRoutes);   // Skill categories CRUD
 
 // Health check endpoint
