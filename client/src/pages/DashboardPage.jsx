@@ -67,7 +67,7 @@ export default function DashboardPage() {
             >
                 <CardActionArea
                     sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    onClick={() => alert('I need help!')}
+                    onClick={() => alert('Help me!')}
                 >
                     <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <HelpOutlineIcon sx={{ fontSize: 80, color: '#d81b60', mb: 2 }} />
@@ -77,7 +77,7 @@ export default function DashboardPage() {
                             fontWeight={700}
                             sx={{ fontFamily: 'Comic Sans MS, Comic Sans, cursive', color: '#ad1457' }}
                         >
-                            I need help
+                            Help me
                         </Typography>
                     </CardContent>
                 </CardActionArea>

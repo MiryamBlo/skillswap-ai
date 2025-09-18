@@ -3,7 +3,7 @@ const db = require('../config/db');
 exports.getAllCategories = async (req, res) => {
     try {
         const result = await db.query(
-            'SELECT * FROM skill_categories WHERE is_deleted = false ORDER BY name ASC'
+            'SELECT * FROM categories WHERE is_deleted = false ORDER BY name ASC'
         );
         res.status(200).json(result.rows);
     } catch (error) {
@@ -18,7 +18,7 @@ exports.addCategory = async (req, res) => {
 
     try {
         const result = await db.query(
-            'INSERT INTO skill_categories (name, description) VALUES ($1, $2) RETURNING *',
+            'INSERT INTO categories (name, description) VALUES ($1, $2) RETURNING *',
             [name, description]
         );
         res.status(201).json(result.rows[0]);
@@ -31,7 +31,7 @@ exports.addCategory = async (req, res) => {
 exports.deleteCategory = async (req, res) => {
     try {
         const result = await db.query(
-            'UPDATE skill_categories SET is_deleted = true WHERE id = $1 RETURNING *',
+            'UPDATE categories SET is_deleted = true WHERE id = $1 RETURNING *',
             [req.params.id]
         );
         res.status(200).json(result.rows[0]);

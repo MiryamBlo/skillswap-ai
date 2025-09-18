@@ -5,6 +5,7 @@ import {
     IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, CircularProgress
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
+import { useConfirm } from '../components/ConfirmDialog';
 
 export default function CategoriesPage() {
     const [categories, setCategories] = useState([]);
@@ -17,6 +18,7 @@ export default function CategoriesPage() {
     const [openEdit, setOpenEdit] = useState(false);
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
+    const [confirm, confirmDialog] = useConfirm();
     const fetchCategories = async () => {
         setLoading(true);
         try {
@@ -47,16 +49,8 @@ export default function CategoriesPage() {
         }
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm('Delete this category?')) return;
-        try {
-            await axiosClient.delete(`/categories/${id}`);
-            fetchCategories();
-            showSnackbar('Category deleted');
-        } catch {
-            showSnackbar('Failed to delete category', 'error');
-        }
-    };
+    const isConfirmed = confirm('Confirm Deletion', 'Are you sure you want to delete this category?');
+    if (!isConfirmed) return;
 
     const handleEditOpen = (cat) => {
         setEditId(cat.id);
@@ -93,7 +87,7 @@ export default function CategoriesPage() {
     return (
         <Container maxWidth="sm" style={{ marginTop: '30px' }}>
             <Typography variant="h4" gutterBottom>Categories</Typography>
-
+            {confirmDialog}
             {/* Add Form */}
             <form onSubmit={handleAdd} style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
                 <TextField

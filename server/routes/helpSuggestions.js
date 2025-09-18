@@ -4,8 +4,8 @@ const db = require('../config/db');
 
 router.post('/', async (req, res) => {
     const {
-        category,        // category id if existing (should be integer or stringified integer)
-        newCategory,     // new category name if provided
+        category,        // id if existing, name if not
+        newCategory,     // name if new
         title,
         description,
         distance,
@@ -17,24 +17,27 @@ router.post('/', async (req, res) => {
     try {
         let categoryId = null;
 
-        // If newCategory is provided, insert it and get its id
         if (newCategory && newCategory.trim() !== '') {
+            // Always insert new category if provided
             const catResult = await db.query(
                 `INSERT INTO categories (name) VALUES ($1) RETURNING id`,
                 [newCategory.trim()]
             );
             categoryId = catResult.rows[0].id;
         } else if (category) {
-            // Try to parse as integer
+            // Try to parse as integer (id)
             categoryId = parseInt(category, 10);
             if (isNaN(categoryId)) {
-                // If not an integer, try to find the category by name
-                const catResult = await db.query(
+                // If not an integer, treat as name: look up or insert
+                let catResult = await db.query(
                     `SELECT id FROM categories WHERE name = $1`,
                     [category]
                 );
                 if (catResult.rows.length === 0) {
-                    return res.status(400).json({ message: 'Category not found' });
+                    catResult = await db.query(
+                        `INSERT INTO categories (name) VALUES ($1) RETURNING id`,
+                        [category]
+                    );
                 }
                 categoryId = catResult.rows[0].id;
             }
