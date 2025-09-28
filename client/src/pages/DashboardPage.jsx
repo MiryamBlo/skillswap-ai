@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardActionArea, CardContent, Typography, Box } from '@mui/material';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { useTranslation } from 'react-i18next';
+import '../i18n';
 
 export default function DashboardPage() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <Box
@@ -47,7 +50,7 @@ export default function DashboardPage() {
                             fontWeight={700}
                             sx={{ fontFamily: 'Comic Sans MS, Comic Sans, cursive', color: '#00897b' }}
                         >
-                            I want to help
+                            {t('offer')}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -62,7 +65,7 @@ export default function DashboardPage() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    background: '#f8c3e3ff',
+                    background: '#f8c3e6ff',
                 }}
             >
                 <CardActionArea
@@ -77,7 +80,7 @@ export default function DashboardPage() {
                             fontWeight={700}
                             sx={{ fontFamily: 'Comic Sans MS, Comic Sans, cursive', color: '#ad1457' }}
                         >
-                            Help me
+                            {t('help')}
                         </Typography>
                     </CardContent>
                 </CardActionArea>

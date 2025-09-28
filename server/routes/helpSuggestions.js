@@ -11,7 +11,8 @@ router.post('/', async (req, res) => {
         distance,
         creditCost,
         isFree,
-        userId
+        userId,
+        displayDurationDays
     } = req.body;
 
     try {
@@ -47,10 +48,10 @@ router.post('/', async (req, res) => {
 
         const result = await db.query(
             `INSERT INTO help_suggestions 
-                (category_id, title, description, distance, credit_cost, is_free, user_id, is_delete, update_timestamp)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, FALSE, CURRENT_TIMESTAMP)
-             RETURNING *`,
-            [categoryId, title, description, distance, creditCost, isFree, userId]
+        (category_id, title, description, distance, credit_cost, is_free, user_id, is_deleted, updated_at, created_at, display_duration_days)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, $8)
+     RETURNING *`,
+            [categoryId, title, description, distance, creditCost, isFree, userId, displayDurationDays]
         );
 
         res.status(201).json({ message: 'Suggestion saved!', suggestion: result.rows[0] });

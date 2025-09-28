@@ -20,6 +20,7 @@ export default function HelpSuggestingPage() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' | 'error' | 'warning' | 'info'
+    const [displayDurationDays, setDisplayDurationDays] = useState(1);
 
     useEffect(() => {
         axiosClient.get('/categories').then(res => setCategories(res.data));
@@ -36,7 +37,8 @@ export default function HelpSuggestingPage() {
                 distance,
                 creditCost: isFree ? 0 : creditCost,
                 isFree,
-                userId
+                userId,
+                displayDurationDays
             });
             
             setSnackbarMessage('Thanks for offering your help!');
@@ -55,11 +57,22 @@ export default function HelpSuggestingPage() {
                 const res = await axiosClient.get('/categories');
                 setCategories(res.data);
             }
-        } catch (err) {
-            setSnackbarMessage('Failed to submit offering.');
-            setSnackbarSeverity('error');
-            setSnackbarOpen(true);
         }
+       catch (err) {
+                if (
+                    err.response &&
+                    err.response.data &&
+                    err.response.data.error &&
+                    err.response.data.error.includes('duplicate key value violates unique constraint "categories_name_key"')
+                ) {
+                    setSnackbarMessage('This category already exists.');
+                    setSnackbarSeverity('error');
+                } else {
+                    setSnackbarMessage('Failed to submit offering.');
+                    setSnackbarSeverity('error');
+                }
+                setSnackbarOpen(true);
+            }
     };
 
     return (
@@ -88,9 +101,9 @@ export default function HelpSuggestingPage() {
                             {categories.map(cat => (
                                 <MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
                             ))}
-                            <MenuItem value="">Other (add new)</MenuItem>
+                            <MenuItem value="Other">Other (add new)</MenuItem>
                         </TextField>
-                        {category === '' && (
+                        {category === 'Other' && (
                             <TextField
                                 label="New Category"
                                 value={newCategory}
@@ -124,6 +137,19 @@ export default function HelpSuggestingPage() {
                             }
                             label="Free"
                         />
+                        <Box sx={{ px: 2 }}>
+                            <Typography gutterBottom>
+                                Display Duration (days): {displayDurationDays}
+                            </Typography>
+                            <Slider
+                                value={displayDurationDays}
+                                onChange={(e, val) => setDisplayDurationDays(val)}
+                                min={1}
+                                max={30}
+                                step={1}
+                                valueLabelDisplay="auto"
+                            />
+                        </Box>
                         {!isFree && (
                             <Box sx={{ px: 2 }}>
                                 <Box sx={{ px: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
