@@ -6,6 +6,7 @@ import {
 import axiosClient from '../api/axiosClient';
 import StarsIcon from '@mui/icons-material/Stars';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import { useTranslation } from 'react-i18next';
 
 export default function HelpSuggestingPage() {
     const [categories, setCategories] = useState([]);
@@ -21,6 +22,7 @@ export default function HelpSuggestingPage() {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success'); // 'success' | 'error' | 'warning' | 'info'
     const [displayDurationDays, setDisplayDurationDays] = useState(1);
+    const { t } = useTranslation();
 
     useEffect(() => {
         axiosClient.get('/categories').then(res => setCategories(res.data));
@@ -87,12 +89,12 @@ export default function HelpSuggestingPage() {
                         sx={{ color: '#00897b', display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 2 }}
                     >
                         <VolunteerActivismIcon sx={{ fontSize: 48, color: '#00bfae', mb: 1 }} />
-                        How would you like to help?
+                        { t('HowToHelp')}?
                     </Typography>
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
                         <TextField
                             select
-                            label="Category"
+                            label={t('Category')}
                             value={category}
                             onChange={e => setCategory(e.target.value)}
                             fullWidth
@@ -101,11 +103,11 @@ export default function HelpSuggestingPage() {
                             {categories.map(cat => (
                                 <MenuItem key={cat.id} value={cat.id}>{cat.name}</MenuItem>
                             ))}
-                            <MenuItem value="Other">Other (add new)</MenuItem>
+                            <MenuItem value="Other">{t('Other')} ({t('newCategory')})</MenuItem>
                         </TextField>
                         {category === 'Other' && (
                             <TextField
-                                label="New Category"
+                                label={t('newCategory')}
                                 value={newCategory}
                                 onChange={e => setNewCategory(e.target.value)}
                                 fullWidth
@@ -113,14 +115,14 @@ export default function HelpSuggestingPage() {
                             />
                         )}
                         <TextField
-                            label="Short Title"
+                            label={t('ShortDescription')}
                             value={title}
                             onChange={e => setTitle(e.target.value)}
                             fullWidth
                             required
                         />
                         <TextField
-                            label="Description"
+                            label={t('Description')}
                             value={description}
                             onChange={e => setDescription(e.target.value)}
                             fullWidth
@@ -135,11 +137,11 @@ export default function HelpSuggestingPage() {
                                     color="primary"
                                 />
                             }
-                            label="Free"
+                            label={t('free')}
                         />
                         <Box sx={{ px: 2 }}>
                             <Typography gutterBottom>
-                                Display Duration (days): {displayDurationDays}
+                               {t('DisplayDuration')}: {displayDurationDays}
                             </Typography>
                             <Slider
                                 value={displayDurationDays}
@@ -155,7 +157,7 @@ export default function HelpSuggestingPage() {
                                 <Box sx={{ px: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
                                     <StarsIcon sx={{ color: '#f8c3e3ff', fontSize: 32 }} />
                                     <Typography gutterBottom fontWeight={600}>
-                                        Credit Cost: {creditCost}
+                                        {t('CreditCost')}: {creditCost}
                                     </Typography>
                                 </Box>
                                 <Slider
@@ -169,7 +171,7 @@ export default function HelpSuggestingPage() {
                             </Box>
                         )}
                         <Box sx={{ px: 2 }}>
-                            <Typography gutterBottom>Distance range (km): {distance}</Typography>
+                            <Typography gutterBottom>{t('DistanceRange')}: {distance}</Typography>
                             <Slider
                                 value={distance}
                                 onChange={(e, val) => setDistance(val)}
@@ -180,7 +182,7 @@ export default function HelpSuggestingPage() {
                             />
                         </Box>
                         <Button type="submit" variant="contained" color="primary" size="large">
-                            Submit
+                            {t('Submit')}
                         </Button>
                     </form>
                 </CardContent>

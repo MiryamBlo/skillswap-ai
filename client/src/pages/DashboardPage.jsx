@@ -70,7 +70,7 @@ export default function DashboardPage() {
             >
                 <CardActionArea
                     sx={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                    onClick={() => alert('Help me!')}
+                    onClick={() => navigate('/help-request')}
                 >
                     <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                         <HelpOutlineIcon sx={{ fontSize: 80, color: '#d81b60', mb: 2 }} />

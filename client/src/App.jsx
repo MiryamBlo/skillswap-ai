@@ -10,13 +10,27 @@ import CategoryDetailsPage from './pages/CategoryDetailsPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardPage from './pages/DashboardPage';
 import HelpSuggestingPage from './pages/HelpSuggestingPage';
+import HelpRequestPage from './pages/HelpRequestPage';
+import { useTranslation } from 'react-i18next';
+import React, { useEffect, useState } from 'react';
 
 export default function App() {
   const location = useLocation();
+  const { i18n } = useTranslation();
+  const [dir, setDir] = useState(i18n.language === 'he' ? 'rtl' : 'ltr');
   const hideNavbar = location.pathname === '/login' || location.pathname === '/register';
+
+  useEffect(() => {
+    const lang = i18n.language || localStorage.getItem('language') || 'en';
+    setDir(lang === 'he' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('dir', lang === 'he' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', lang);
+  }, [i18n.language]);
+
 
   return (
     <>
+      <div dir={dir}>
       {!hideNavbar && <Navbar />}
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
@@ -28,8 +42,11 @@ export default function App() {
         <Route path="/opportunities" element={<ProtectedRoute><OpportunitiesPage /></ProtectedRoute>} />
         <Route path="/categories/:id" element={<CategoryDetailsPage />} />
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
-        <Route path="/help-suggesting" element={<HelpSuggestingPage />} />
-      </Routes>
+          <Route path="/help-suggesting" element={<HelpSuggestingPage />} />
+          <Route path="/help-request" element={<HelpRequestPage />} />
+
+        </Routes>
+      </div>
     </>
   );
 }
