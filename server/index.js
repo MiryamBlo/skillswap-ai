@@ -24,6 +24,7 @@ app.use('/api/skills', skillsRoutes);           // Skills CRUD
 app.use('/api/dashboard', dashboardRoutes); // Add this line
 app.use('/api/categories', categoriesRoutes);   // Skill categories CRUD
 app.use('/api/help-suggestions', helpSuggestionsRoutes);
+app.use('/api/help-requests', require('./routes/helpRequest'));
 // Health check endpoint
 app.get('/', (req, res) => {
     res.send({ message: 'SkillSwapAI API is running 🚀' });

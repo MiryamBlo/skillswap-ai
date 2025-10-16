@@ -19,6 +19,7 @@ export default function CategoriesPage() {
     const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
     const [confirm, confirmDialog] = useConfirm();
+
     const fetchCategories = async () => {
         setLoading(true);
         try {
@@ -49,9 +50,6 @@ export default function CategoriesPage() {
         }
     };
 
-    const isConfirmed = confirm('Confirm Deletion', 'Are you sure you want to delete this category?');
-    if (!isConfirmed) return;
-
     const handleEditOpen = (cat) => {
         setEditId(cat.id);
         setName(cat.name);
@@ -80,6 +78,20 @@ export default function CategoriesPage() {
         ));
     };
 
+    // ✅ Fixed: confirm deletion only on click
+    const handleDelete = async (id) => {
+        const isConfirmed = await confirm('Confirm Deletion', 'Are you sure you want to delete this category?');
+        if (!isConfirmed) return;
+
+        try {
+            await axiosClient.delete(`/categories/${id}`);
+            fetchCategories();
+            showSnackbar('Category deleted');
+        } catch {
+            showSnackbar('Failed to delete category', 'error');
+        }
+    };
+
     useEffect(() => {
         fetchCategories();
     }, []);
@@ -88,6 +100,7 @@ export default function CategoriesPage() {
         <Container maxWidth="sm" style={{ marginTop: '30px' }}>
             <Typography variant="h4" gutterBottom>Categories</Typography>
             {confirmDialog}
+
             {/* Add Form */}
             <form onSubmit={handleAdd} style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
                 <TextField

@@ -12,7 +12,6 @@ export default function HelpRequestPage() {
     const [newCategory, setNewCategory] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [distance, setDistance] = useState(10);
     const [displayDurationDays, setDisplayDurationDays] = useState(1);
 
     useEffect(() => {
@@ -22,22 +21,26 @@ export default function HelpRequestPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axiosClient.post('/help-requests', {
+            const res = await axiosClient.post('/help-requests', {
                 category,
                 newCategory,
                 title,
                 description,
-                distance,
                 displayDurationDays,
                 userId: localStorage.getItem('userId')
             });
-            alert(t('request_submitted') || 'Request submitted!');
-            setCategory('');
-            setNewCategory('');
-            setTitle('');
-            setDescription('');
-            setDistance(10);
-            setDisplayDurationDays(1);
+            if (res.data.suggestions && res.data.suggestions.length > 0) {
+                // Show suggestions to the user
+                // For example, setSuggestions(res.data.suggestions);
+                alert('Found relevant help offers!');
+            } else {
+                alert(t('request_submitted') || 'Request submitted!');
+                setCategory('');
+                setNewCategory('');
+                setTitle('');
+                setDescription('');
+                setDisplayDurationDays(1);
+            }
         } catch (err) {
             alert(t('request_failed') || 'Failed to submit request.');
         }
@@ -107,19 +110,6 @@ export default function HelpRequestPage() {
                                 onChange={(e, val) => setDisplayDurationDays(val)}
                                 min={1}
                                 max={30}
-                                step={1}
-                                valueLabelDisplay="auto"
-                            />
-                        </Box>
-                        <Box sx={{ px: 2 }}>
-                            <Typography gutterBottom>
-                                {t('DistanceRange') || 'Distance range (km)'}: {distance}
-                            </Typography>
-                            <Slider
-                                value={distance}
-                                onChange={(e, val) => setDistance(val)}
-                                min={1}
-                                max={50}
                                 step={1}
                                 valueLabelDisplay="auto"
                             />
