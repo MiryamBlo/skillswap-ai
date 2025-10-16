@@ -13,13 +13,13 @@ exports.getAllCategories = async (req, res) => {
 };
 
 exports.addCategory = async (req, res) => {
-    const { name, description } = req.body;
+    const { name } = req.body;
     if (!name) return res.status(400).json({ message: 'Category name is required' });
 
     try {
         const result = await db.query(
-            'INSERT INTO categories (name, description) VALUES ($1, $2) RETURNING *',
-            [name, description]
+            'INSERT INTO categories (name) VALUES ($1) RETURNING *',
+            [name]
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {

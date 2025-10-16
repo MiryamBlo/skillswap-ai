@@ -2,23 +2,24 @@ import React, { useEffect, useState } from 'react';
 import axiosClient from '../api/axiosClient';
 import {
     Container, Typography, TextField, Button, List, ListItem, ListItemText,
-    IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, CircularProgress
+    IconButton, Dialog, DialogTitle, DialogContent, DialogActions, CircularProgress
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import { useConfirm } from '../components/ConfirmDialog';
+import { useAlert } from '../hooks/useAlert';
+import GenericAlert from '../components/GenericAlert';
 
 export default function CategoriesPage() {
     const [categories, setCategories] = useState([]);
     const [filtered, setFiltered] = useState([]);
     const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
     const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(false);
     const [editId, setEditId] = useState(null);
     const [openEdit, setOpenEdit] = useState(false);
-    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
     const [confirm, confirmDialog] = useConfirm();
+    const { alert, showAlert, hideAlert } = useAlert();
 
     const fetchCategories = async () => {
         setLoading(true);
@@ -27,58 +28,49 @@ export default function CategoriesPage() {
             setCategories(res.data);
             setFiltered(res.data);
         } catch (err) {
-            showSnackbar('Failed to fetch categories', 'error');
+            showAlert('Failed to fetch categories', 'error', 'Error');
         } finally {
             setLoading(false);
         }
     };
 
-    const showSnackbar = (message, severity = 'success') => {
-        setSnackbar({ open: true, message, severity });
-    };
-
     const handleAdd = async (e) => {
         e.preventDefault();
         try {
-            await axiosClient.post('/categories', { name, description });
+            await axiosClient.post('/categories', { name });
             setName('');
-            setDescription('');
             fetchCategories();
-            showSnackbar('Category added successfully');
+            showAlert('Category added successfully! 🎉', 'success', 'Success');
         } catch {
-            showSnackbar('Failed to add category', 'error');
+            showAlert('Failed to add category', 'error', 'Error');
         }
     };
 
     const handleEditOpen = (cat) => {
         setEditId(cat.id);
         setName(cat.name);
-        setDescription(cat.description);
         setOpenEdit(true);
     };
 
     const handleEditSave = async () => {
         try {
-            await axiosClient.put(`/categories/${editId}`, { name, description });
+            await axiosClient.put(`/categories/${editId}`, { name });
             setOpenEdit(false);
             setName('');
-            setDescription('');
             fetchCategories();
-            showSnackbar('Category updated');
+            showAlert('Category updated successfully! ✅', 'success', 'Success');
         } catch {
-            showSnackbar('Failed to update category', 'error');
+            showAlert('Failed to update category', 'error', 'Error');
         }
     };
 
     const handleSearch = (value) => {
         setSearch(value);
         setFiltered(categories.filter(c =>
-            c.name.toLowerCase().includes(value.toLowerCase()) ||
-            c.description.toLowerCase().includes(value.toLowerCase())
+            c.name.toLowerCase().includes(value.toLowerCase())
         ));
     };
 
-    // ✅ Fixed: confirm deletion only on click
     const handleDelete = async (id) => {
         const isConfirmed = await confirm('Confirm Deletion', 'Are you sure you want to delete this category?');
         if (!isConfirmed) return;
@@ -86,9 +78,9 @@ export default function CategoriesPage() {
         try {
             await axiosClient.delete(`/categories/${id}`);
             fetchCategories();
-            showSnackbar('Category deleted');
+            showAlert('Category deleted successfully! 🗑️', 'success', 'Success');
         } catch {
-            showSnackbar('Failed to delete category', 'error');
+            showAlert('Failed to delete category', 'error', 'Error');
         }
     };
 
@@ -107,13 +99,6 @@ export default function CategoriesPage() {
                     label="Category name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    required
-                    fullWidth
-                />
-                <TextField
-                    label="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
                     required
                     fullWidth
                 />
@@ -148,7 +133,7 @@ export default function CategoriesPage() {
                                 </>
                             }
                         >
-                            <ListItemText primary={cat.name} secondary={cat.description} />
+                            <ListItemText primary={cat.name} />
                         </ListItem>
                     ))}
                 </List>
@@ -165,12 +150,6 @@ export default function CategoriesPage() {
                         fullWidth
                         style={{ marginBottom: '10px' }}
                     />
-                    <TextField
-                        label="Description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        fullWidth
-                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpenEdit(false)}>Cancel</Button>
@@ -178,13 +157,8 @@ export default function CategoriesPage() {
                 </DialogActions>
             </Dialog>
 
-            {/* Snackbar */}
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={3000}
-                onClose={() => setSnackbar({ ...snackbar, open: false })}
-                message={snackbar.message}
-            />
+            {/* Generic Alert */}
+            <GenericAlert alert={alert} onClose={hideAlert} />
         </Container>
     );
 }

@@ -22,7 +22,6 @@ export default function CategoryDetailsPage() {
     return (
         <div className="page-container">
             <h1>{category.name}</h1>
-            <p>{category.description}</p>
             <Link to={`/categories/${id}/create-opportunity`}>➕ צור בקשה/הצעה</Link>
             <ul>
                 {opportunities.map(o => (
